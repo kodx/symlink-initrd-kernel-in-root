@@ -1,0 +1,12 @@
+[Trigger]
+Type = Package
+Operation = Install
+Operation = Upgrade
+Operation = Remove
+Target = linux*
+
+[Action]
+Description = Creating /vmlinuz and /initrd.img symlinks...
+When = PostTransaction
+Exec = /usr/share/libalpm/scripts/symlink-initrd-kernel-in-root
+

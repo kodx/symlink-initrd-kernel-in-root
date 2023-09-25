@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+
+KERNSTR=$(
+    find /boot/vmlinuz* -maxdepth 0 -type f -regex '.*/vmlinuz-[0-9]+.[0-9]+-[^rt].+' -printf '%f\n' | 
+    sort --version-sort | 
+    tail -1 | 
+    cut -d '-' -f 2,3
+)
+
+KERNELPATH=boot/vmlinuz-"$KERNSTR"
+INITRDPATH=boot/initramfs-"$KERNSTR".img
+
+if [ ! -s /"$KERNELPATH" ] || [ ! -s /"$INITRDPATH" ]; then
+    echo 'Kernel or initramfs not found in /boot, exit.'
+    return 1
+fi
+
+ln -sf $KERNELPATH /vmlinuz
+ln -sf $INITRDPATH /initrd.img
+
+unset KERNSTR KERNELPATH INITRDPATH
+

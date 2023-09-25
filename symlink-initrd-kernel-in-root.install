@@ -1,0 +1,13 @@
+post_install() {
+    /usr/share/libalpm/scripts/symlink-initrd-kernel-in-root
+}
+
+post_remove() {
+    echo 'Deleting /vmlinuz and /initrd.img symlinks...'
+    if [ -h /vmlinuz ] || [ -h /initrd.img ]; then
+        rm -f /{vmlinuz,initrd.img}
+        echo 'Done.'
+    else
+        echo '/vmlinuz or /initrd.img symlinks not found, done.'
+    fi
+}
